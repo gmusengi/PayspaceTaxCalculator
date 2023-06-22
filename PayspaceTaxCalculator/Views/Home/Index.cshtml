@@ -1,7 +1,52 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@using PayspaceTaxCalculator.API.Models
+@using PayspaceTaxCalculator.Domain.DTOs;
+@model TaxCalculationInput
 
 <div class="text-center">
-    <h1 class="display-4">Welcome to the Payspace Tax Calculator!</h1>    
+    <h1 class="display-4">Welcome to the Payspace Tax Calculator!</h1>
+    <div class="container-doc">
+
+        <h2 class="h4 mb-2 text-gray-600 doc-section-title doc-anchor anchor-js" id="forms-basic">
+            <span>Calculate <b class="text-gray-700">Tax</b></span>
+            <a class="anchor-js-link mx-2" href="#forms-basic" aria-label="Anchor"></a>
+        </h2>
+        @if (ViewData.ModelState[""] != null)
+        {
+            foreach (var error in ViewData.ModelState[""].Errors)
+            {
+                <div class="alert alert-danger">@error.ErrorMessage</div>
+            }
+        }
+        <div class="tab-content" id="nav-tab-1-content">
+            <div class="tab-pane pt-5 fade show active" id="nav-tab-1-preview" aria-labelledby="nav-tab-1-preview-link" role="tabpanel">
+                <div class="row">
+                    <div class="col-12 col-lg-6 mb-3">
+                        <form method="post">
+                            <div class="mb-3">
+                                @Html.LabelFor(model => model.PostalCode, null, new {@class="form-label"})
+                                @Html.TextBoxFor(model => model.PostalCode,null,new {@class="form-control", required="required"})
+                            </div>
+                            <div class="mb-3">
+                                @Html.LabelFor(model => model.AnnualIncome, null, new {@class="form-label"})
+                                @Html.TextBoxFor(model => model.AnnualIncome,null,new {@class="form-control", required="required", type="number"})
+                            </div>
+                            @if (ViewData["CalculationResult"] != null)
+                            {
+                                var calculationResult = ((PayspaceResponse<TaxCalculatorDTO>)ViewData["CalculationResult"]);
+                                <div class="alert alert-success" role="alert">
+                                    <p><strong>Postal Code: </strong> @calculationResult.Response.PostalCode</p>
+                                    <p><strong>Annual Income: </strong> @calculationResult.Response.AnnualIncome.ToString("N2")</p>
+                                    <p><strong>Calculated Tax Amount: </strong> @calculationResult.Response.CalculatedTaxAmount.ToString("N2")</p>
+                                </div>
+                            }
+                            <button type="submit" class="btn btn-primary">Calculate</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
