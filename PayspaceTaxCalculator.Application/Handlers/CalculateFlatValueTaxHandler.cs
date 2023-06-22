@@ -24,10 +24,8 @@ namespace PayspaceTaxCalculator.Application.Handlers
             if (!taxCalculatorResponse.Success)
                 return new PayspaceResponse<TaxCalculatorDTO>
                 {
-                    Id = taxCalculatorResponse.Response.Id,
-                    Response = taxCalculatorResponse.Response.Map(),
                     ErrorMessage = taxCalculatorResponse.ErrorMessage,
-                    Success = taxCalculatorResponse.Success
+                    Success = false
                 };
             var saveResult = await repo.SaveTaxCalculation(taxCalculatorResponse.Response);
             return new PayspaceResponse<TaxCalculatorDTO>

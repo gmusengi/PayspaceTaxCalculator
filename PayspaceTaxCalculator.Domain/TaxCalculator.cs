@@ -9,6 +9,7 @@ namespace PayspaceTaxCalculator.Domain
         public string PostalCode { get; private set; }
         public decimal AnnualIncome { get; private set; }
         public decimal CalculatedTaxAmount { get; private set; }
+        public DateTime Date { get; set; } = DateTime.Now;
         private TaxCalculator(string postalCode, decimal annualIncome, decimal calculatedTaxAmount)
         {
             PostalCode = postalCode;
@@ -72,7 +73,7 @@ namespace PayspaceTaxCalculator.Domain
             return await Task.FromResult(new PayspaceResponse<TaxCalculator> { Response = new TaxCalculator(postalCode, annualIncome, calculatedAmount), Success = true });
         }
 
-        public static async Task<PayspaceResponse<TaxCalculator>> CalculateProgressiveRateTax(string postalCode, decimal annualIncome, List<ProgressiveTaxRateDTO> taxRates, IConfiguration configuration)
+        public static async Task<PayspaceResponse<TaxCalculator>> CalculateProgressiveRateTax(string postalCode, decimal annualIncome, List<ProgressiveTaxRateDTO> taxRates)
         {
             if (string.IsNullOrEmpty(postalCode))
                 return new PayspaceResponse<TaxCalculator> { ErrorMessage = "Postal code is required", Success = false };

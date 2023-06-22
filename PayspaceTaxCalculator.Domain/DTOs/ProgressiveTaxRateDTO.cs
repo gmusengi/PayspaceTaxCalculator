@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PayspaceTaxCalculator.Domain.DTOs
 {
-    public class ProgressiveTaxRateDTO: BaseDTO
+    public class ProgressiveTaxRateDTO
     {
         public Guid Id { get; set; }
         public decimal From { get; set; }

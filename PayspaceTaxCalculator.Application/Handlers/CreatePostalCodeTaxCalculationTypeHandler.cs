@@ -21,9 +21,7 @@ namespace PayspaceTaxCalculator.Application.Handlers
             if (!response.Success)
                 return new PayspaceResponse<PostalCodeTaxCalculationTypeDTO>
                 {
-                    Id = response.Id,
-                    Success = response.Success,
-                    Response = response.Response.Map(),
+                    Success = false,
                     ErrorMessage = response.ErrorMessage
                 };
             PayspaceResponse<PostalCodeTaxCalculationType> saveResult = await repo.SavePostalCodeTaxCalculationType(response.Response);

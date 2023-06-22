@@ -21,10 +21,8 @@ namespace PayspaceTaxCalculator.Application.Handlers
             if (!response.Success)
                 return new PayspaceResponse<ProgressiveTaxRateDTO>
                 {
-                    Id = response.Id,
                     ErrorMessage = response.ErrorMessage,
-                    Response = response.Response.Map(),
-                    Success = response.Success
+                    Success = false
                 };
             PayspaceResponse<ProgressiveTaxRate> saveResult = await repo.SaveProgressiveTaxRate(response.Response);
             if (saveResult == null)

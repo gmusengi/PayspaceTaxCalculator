@@ -17,7 +17,6 @@ namespace PayspaceTaxCalculator.Infrastructure
             this.payspaceDbContext = payspaceDbContext;
             this.configuration = configuration;
         }
-
         public async Task<PayspaceResponse<List<ProgressiveTaxRate>>> GetProgressiveTaxRates()
         {
             var result = await payspaceDbContext.ProgressiveTaxRates.OrderBy(r => r.From).ToListAsync();
@@ -25,7 +24,13 @@ namespace PayspaceTaxCalculator.Infrastructure
                 return new PayspaceResponse<List<ProgressiveTaxRate>> { Response = result, Success = true };
             return new PayspaceResponse<List<ProgressiveTaxRate>> { Success = false };
         }
-
+        public async Task<PayspaceResponse<PostalCodeTaxCalculationType>> GetTaxCalculationTypeFromPostalCode(string postalCode)
+        {
+            var result = await payspaceDbContext.PostalCodeTaxCalculationTypes.FirstOrDefaultAsync(p => p.PostalCode == postalCode);
+            if (result == null)
+                return new PayspaceResponse<PostalCodeTaxCalculationType> { ErrorMessage = $"Could not find tax calculation type for postal code {postalCode}", Success = false };
+            return new PayspaceResponse<PostalCodeTaxCalculationType> { Response = result, Success = true };
+        }
         public async Task<PayspaceResponse<PostalCodeTaxCalculationType>> SavePostalCodeTaxCalculationType(PostalCodeTaxCalculationType postalCodeTaxCalculationType)
         {
             var existingRecord = await payspaceDbContext.PostalCodeTaxCalculationTypes.FirstOrDefaultAsync(p => p.Id == postalCodeTaxCalculationType.Id);

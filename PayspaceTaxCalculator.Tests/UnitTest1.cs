@@ -65,7 +65,7 @@ namespace PayspaceTaxCalculator.Tests
                 Success = true,
                 Response = new List<ProgressiveTaxRateDTO>
                 {
-                    new ProgressiveTaxRateDTO { Id = Guid.NewGuid(), From = 0, To = 8350, Rate = 10},
+                    new ProgressiveTaxRateDTO { Id = Guid.NewGuid(), From = 0, To = 8350, Rate = 10}, 
                     new ProgressiveTaxRateDTO { Id = Guid.NewGuid(), From = 8351, To = 33950, Rate = 15},
                     new ProgressiveTaxRateDTO { Id = Guid.NewGuid(), From = 33951, To = 82250, Rate = 25},
                     new ProgressiveTaxRateDTO { Id = Guid.NewGuid(), From = 82251, To = 171550, Rate = 28},
@@ -78,7 +78,7 @@ namespace PayspaceTaxCalculator.Tests
             //.Returns(Task.FromResult(mockRates)); could not get this to work, opted for just passing in the mockrates instead
             GetProgressiveTaxRatesHandler getProgressiveTaxRatesHandler = new GetProgressiveTaxRatesHandler(repo.Object);
             //PayspaceResponse<List<ProgressiveTaxRateDTO>> ratesResponse = await getProgressiveTaxRatesHandler.Handle(new Application.Queries.GetProgressiveTaxRatesQuery(), new CancellationToken());
-            PayspaceResponse<TaxCalculator> taxCalculatorResponse = await TaxCalculator.CalculateProgressiveRateTax("7000", annualIncome, mockRates.Response, configuration);
+            PayspaceResponse<TaxCalculator> taxCalculatorResponse = await TaxCalculator.CalculateProgressiveRateTax("7441", annualIncome, mockRates.Response);
             Assert.True(taxCalculatorResponse.Success);
             Assert.True((taxCalculatorResponse.Response)?.CalculatedTaxAmount == expectedTaxAmount);
         }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PayspaceTaxCalculator.Domain.DTOs
 {
-    public class TaxCalculatorDTO: BaseDTO
+    public class TaxCalculatorDTO
     {
         public Guid Id { get; set; }
         public string PostalCode { get; set; }

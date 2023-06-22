@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Microsoft.Extensions.Configuration;
 using PayspaceTaxCalculator.Application.Command;
 using PayspaceTaxCalculator.Domain;
 using PayspaceTaxCalculator.Domain.DTOs;
@@ -8,19 +7,17 @@ using PayspaceTaxCalculator.Domain.Mappers;
 
 namespace PayspaceTaxCalculator.Application.Handlers
 {
-    public class CalculateFlatRateTaxHandler : IRequestHandler<CalculateFlatRateTaxCommand, PayspaceResponse<TaxCalculatorDTO>>
+    public class CalculateProgressiveTaxHandler : IRequestHandler<CalculateProgressiveTaxCommand, PayspaceResponse<TaxCalculatorDTO>>
     {
         private readonly IRepository repo;
-        private readonly IConfiguration configuration;
 
-        public CalculateFlatRateTaxHandler(IRepository repo, IConfiguration configuration)
+        public CalculateProgressiveTaxHandler(IRepository repo)
         {
             this.repo = repo;
-            this.configuration = configuration;
         }
-        public async Task<PayspaceResponse<TaxCalculatorDTO>> Handle(CalculateFlatRateTaxCommand request, CancellationToken cancellationToken)
+        public async Task<PayspaceResponse<TaxCalculatorDTO>> Handle(CalculateProgressiveTaxCommand request, CancellationToken cancellationToken)
         {
-            PayspaceResponse<TaxCalculator> taxCalculatorResponse = await TaxCalculator.CalculateFlatRateTax(request.PostalCode, request.AnnualAmount, configuration);
+            PayspaceResponse<TaxCalculator> taxCalculatorResponse = await TaxCalculator.CalculateProgressiveRateTax(request.PostalCode, request.AnnualAmount, request.TaxRates);
             if (!taxCalculatorResponse.Success)
                 return new PayspaceResponse<TaxCalculatorDTO>
                 {
